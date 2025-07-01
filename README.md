@@ -1,73 +1,71 @@
-# Welcome to your Lovable project
+🏃‍♀️ 실시간 가게 혼잡도 공유 플랫폼 - “지금 한가해?”
 
-## Project info
+🚀 서비스 소개
 
-**URL**: https://lovable.dev/projects/5f8a4a92-0e60-446e-8c21-b3fa1d7511f1
+“지금 한가해?”는 사용자들의 실시간 제보를 통해 주변 음식점과 카페는 물론 거리와 같은 모든 장소의 혼잡도를 빠르게 확인할 수 있는 GPS 기반 플랫폼입니다.
+“지금 갈 수 있을까?“라는 질문에 대한 답을, 실제 그곳에 있는 사람들의 경험으로 알려줍니다.
 
-## How can I edit this code?
+[사이트 바로 가기](https://preview--vibe-of-place.lovable.app/)
 
-There are several ways of editing your application.
 
-**Use Lovable**
+### **1. 페르소나 (Persona)**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/5f8a4a92-0e60-446e-8c21-b3fa1d7511f1) and start prompting.
+**성격 급한 대학생 - 이지혜 (22세)**
 
-Changes made via Lovable will be committed automatically to this repo.
+* **직업:** 대학교 4학년
+* **라이프스타일:** 공강 시간이나 수업 전후로 친구들과 식사, 스터디 카페에서 공부
+* **목표:** 시간을 효율적으로 사용하여 불필요한 대기 시간을 줄이고 싶음
+* **니즈:**
+    * 인기 있는 식당이나 카페의 **실시간 혼잡도**를 빠르게 확인하고 싶음
+    * 웨이팅이 긴 곳은 피하고, 바로 이용 가능한 곳을 찾고 싶음
+    * 친구들과 약속을 잡을 때 **미리 혼잡도를 확인**하여 계획을 세우고 싶음
+* **페인 포인트:**
+    * SNS나 리뷰만 믿고 갔다가 **긴 웨이팅**에 시간을 낭비
+    * 식당 앞에서 기다리다 보니 **공강 시간이 부족**해짐
+    * 마음이 급해져서 식사나 카페 이용이 즐겁지 않음
+* **사용자 시나리오 및 스토리:**
 
-**Use your preferred IDE**
+#### **급한 공강 시간, 점심 식사**
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+**상황:** 지혜는 2시 수업 전에 친구들과 1시간의 공강 시간이 생겼습니다. 배는 고프지만, 웨이팅 때문에 시간을 낭비하고 싶지 않습니다.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+**사용자 시나리오:**
+1.  스마트폰에서 '가게 혼잡도' 앱(또는 웹사이트)을 켬.
+2.  현재 위치를 기반으로 주변 음식점 리스트가 뜸.
+3.  앱에서 제공하는 실시간 혼잡도 정보(널널, 보통, 혼잡)를 확인.
+4.  혼잡도가 **'널널' 또는 '보통'**으로 표시된 식당을 선택.
+5.  친구들과 바로 식당으로 이동하여 대기 없이 빠르게 식사 해결.
 
-Follow these steps:
+**사용자 스토리:**
+"저는 공강 시간에 식사를 해야 할 때, 웨이팅으로 시간을 낭비하고 싶지 않아요. 그래서 실시간으로 혼잡도를 알려줘서 바로 들어갈 수 있는 식당을 찾고 싶어요. 수업에 늦지 않고 효율적으로 시간을 쓰고 싶거든요."
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+**인수 조건:**
+* **Given:** 사용자가 앱을 실행하고 GPS 위치 정보 사용을 허용했을 때
+* **When:** 주변 500m 이내 공간 리스트를 조회했을 때
+* **Then:** 각 공간별로 **'널널', '보통', '혼잡'** 세 가지 상태 중 하나를 3초 이내에 직관적인 아이콘과 함께 표시해야 한다.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+---
 
-# Step 3: Install the necessary dependencies.
-npm i
+### **2. 핵심 가치 제안 (Core Value Proposition)**
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+* **시간 절약:** 불필요한 웨이팅을 없애 **사용자의 소중한 시간을 확보**해 줍니다.
+* **결정 피로 해소:** 혼잡도라는 **직관적인 정보**로 선택의 고민을 덜어줍니다.
+* **실시간 & 참여형 정보:** 사용자들이 직접 참여하여 **신뢰도 높은 최신 정보**를 공유합니다.
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### **3. 핵심 기능 (Key Features)**
 
-**Use GitHub Codespaces**
+* **GPS 기반 주변 공간 혼잡도 표시:** 현재 위치를 기반으로 주변 식당, 카페의 실시간 혼잡도를 지도 또는 리스트 형태로 보여줍니다.
+* **사용자 참여형 혼잡도 공유:** 사용자가 해당 가게에 머무는 동안, 앱 내에서 **'널널', '보통', '혼잡'** 상태 중 하나를 버튼 클릭으로 간편하게 공유할 수 있습니다.
+* **직관적인 시각화:** 혼잡도 상태를 색상(초록/노랑/빨강) 또는 이모티콘(😊/😐/😠)으로 표시하여 한눈에 알아보기 쉽게 합니다.
+* **자동 혼잡도 업데이트:** 사용자들이 공유한 데이터를 바탕으로 **일정 시간(예: 5분)마다 자동으로 혼잡도 정보를 갱신**합니다.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+### **4. 구현 범위 (Scope of Implementation)**
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/5f8a4a92-0e60-446e-8c21-b3fa1d7511f1) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+* **프로토타입 수준의 웹/앱:** GPS 기반으로 주변 가게 리스트를 불러오고, 사용자가 혼잡도를 직접 '제보'할 수 있는 인터페이스를 구현합니다.
+* **목업(Mocking) 데이터 활용:** 실제 실시간 사용자 데이터 대신, 미리 정의된 더미 데이터를 활용하여 혼잡도 변화를 시뮬레이션합니다.
+* **'제보하기' 기능 구현:** 사용자가 가게를 선택하면, '혼잡도 제보하기' 버튼을 통해 '널널', '보통', '혼잡'을 선택하여 전송할 수 있도록 합니다.
+* **데이터 누적 및 반영:** 여러 사용자가 제보한 혼잡도 데이터가 누적되어 평균적인 혼잡도를 계산하고, 이를 다른 사용자에게 표시해 줍니다.
