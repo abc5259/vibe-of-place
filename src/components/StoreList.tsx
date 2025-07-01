@@ -1,9 +1,10 @@
+
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Clock, Star } from 'lucide-react';
-import { Store, CrowdnessLevel } from '@/types/store';
+import { MapPin, Clock, Star, Train, TreePine, Building, Users, ShoppingBag } from 'lucide-react';
+import { Store, CrowdnessLevel, LocationType } from '@/types/store';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
@@ -38,10 +39,35 @@ const StoreList: React.FC<StoreListProps> = ({ stores, onReportCrowdness, onStor
     }
   };
 
+  const getLocationIcon = (locationType: LocationType) => {
+    switch (locationType) {
+      case 'store': return <ShoppingBag className="w-4 h-4" />;
+      case 'street': 
+      case 'plaza': return <Users className="w-4 h-4" />;
+      case 'park': return <TreePine className="w-4 h-4" />;
+      case 'station': return <Train className="w-4 h-4" />;
+      case 'mall': return <Building className="w-4 h-4" />;
+      default: return <MapPin className="w-4 h-4" />;
+    }
+  };
+
+  const getLocationTypeText = (locationType: LocationType) => {
+    switch (locationType) {
+      case 'store': return '가게';
+      case 'street': return '거리';
+      case 'park': return '공원';
+      case 'station': return '역';
+      case 'mall': return '쇼핑몰';
+      case 'plaza': return '광장';
+      case 'attraction': return '명소';
+      default: return '장소';
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">주변 가게 ({stores.length}개)</h2>
+        <h2 className="text-2xl font-bold text-gray-900">주변 장소 ({stores.length}개)</h2>
         <div className="text-sm text-gray-600">
           최근 업데이트: {formatDistanceToNow(new Date(), { addSuffix: true, locale: ko })}
         </div>
@@ -57,9 +83,15 @@ const StoreList: React.FC<StoreListProps> = ({ stores, onReportCrowdness, onStor
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-center space-x-3 mb-2">
-                  <h3 className="text-lg font-semibold text-gray-900">{store.name}</h3>
+                  <div className="flex items-center space-x-2">
+                    {getLocationIcon(store.locationType)}
+                    <h3 className="text-lg font-semibold text-gray-900">{store.name}</h3>
+                  </div>
                   <Badge variant="outline" className="text-xs">
                     {store.category}
+                  </Badge>
+                  <Badge variant="secondary" className="text-xs">
+                    {getLocationTypeText(store.locationType)}
                   </Badge>
                   {store.rating && (
                     <div className="flex items-center space-x-1">
@@ -86,6 +118,9 @@ const StoreList: React.FC<StoreListProps> = ({ stores, onReportCrowdness, onStor
                 </div>
 
                 <p className="text-sm text-gray-500 mb-3">{store.address}</p>
+                {store.description && (
+                  <p className="text-sm text-blue-600 mb-3">{store.description}</p>
+                )}
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">

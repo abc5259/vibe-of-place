@@ -6,8 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { MapPin, Clock, Star, X } from 'lucide-react';
-import { Store, CrowdnessLevel } from '@/types/store';
+import { MapPin, Clock, Star, Train, TreePine, Building, Users, ShoppingBag } from 'lucide-react';
+import { Store, CrowdnessLevel, LocationType } from '@/types/store';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
@@ -42,6 +42,31 @@ const StoreDetailModal: React.FC<StoreDetailModalProps> = ({
     }
   };
 
+  const getLocationIcon = (locationType: LocationType) => {
+    switch (locationType) {
+      case 'store': return <ShoppingBag className="w-6 h-6" />;
+      case 'street': 
+      case 'plaza': return <Users className="w-6 h-6" />;
+      case 'park': return <TreePine className="w-6 h-6" />;
+      case 'station': return <Train className="w-6 h-6" />;
+      case 'mall': return <Building className="w-6 h-6" />;
+      default: return <MapPin className="w-6 h-6" />;
+    }
+  };
+
+  const getLocationTypeText = (locationType: LocationType) => {
+    switch (locationType) {
+      case 'store': return '가게';
+      case 'street': return '거리';
+      case 'park': return '공원';
+      case 'station': return '역';
+      case 'mall': return '쇼핑몰';
+      case 'plaza': return '광장';
+      case 'attraction': return '명소';
+      default: return '장소';
+    }
+  };
+
   const chartData = store.hourlyData?.map(data => ({
     hour: `${data.hour}시`,
     crowdness: data.crowdnessValue,
@@ -55,20 +80,16 @@ const StoreDetailModal: React.FC<StoreDetailModalProps> = ({
     },
   };
 
-  const getAreaColor = (value: number) => {
-    if (value < 33) return '#22c55e'; // green
-    if (value < 67) return '#f97316'; // orange
-    return '#ef4444'; // red
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
+              {getLocationIcon(store.locationType)}
               <span className="text-xl font-bold">{store.name}</span>
               <Badge variant="outline">{store.category}</Badge>
+              <Badge variant="secondary">{getLocationTypeText(store.locationType)}</Badge>
             </div>
           </DialogTitle>
         </DialogHeader>
@@ -101,7 +122,10 @@ const StoreDetailModal: React.FC<StoreDetailModalProps> = ({
                     )}
                   </div>
                   
-                  <p className="text-sm text-gray-500 mb-4">{store.address}</p>
+                  <p className="text-sm text-gray-500 mb-2">{store.address}</p>
+                  {store.description && (
+                    <p className="text-sm text-blue-600 mb-4">{store.description}</p>
+                  )}
                   
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
