@@ -156,10 +156,13 @@ const StoreDetailModal: React.FC<StoreDetailModalProps> = ({
                     />
                     <ChartTooltip
                       content={<ChartTooltipContent 
-                        formatter={(value, name) => [
-                          `${value}% (${value < 33 ? '널널' : value < 67 ? '보통' : '혼잡'})`,
-                          '혼잡도'
-                        ]}
+                        formatter={(value, name) => {
+                          const numValue = typeof value === 'number' ? value : 0;
+                          return [
+                            `${numValue}% (${numValue < 33 ? '널널' : numValue < 67 ? '보통' : '혼잡'})`,
+                            '혼잡도'
+                          ];
+                        }}
                       />}
                     />
                     <Area
