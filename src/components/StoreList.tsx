@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,9 +10,10 @@ import { ko } from 'date-fns/locale';
 interface StoreListProps {
   stores: Store[];
   onReportCrowdness: (store: Store) => void;
+  onStoreClick: (store: Store) => void;
 }
 
-const StoreList: React.FC<StoreListProps> = ({ stores, onReportCrowdness }) => {
+const StoreList: React.FC<StoreListProps> = ({ stores, onReportCrowdness, onStoreClick }) => {
   const getCrowdnessColor = (level: CrowdnessLevel) => {
     switch (level) {
       case 'low': return 'bg-green-500';
@@ -48,7 +48,11 @@ const StoreList: React.FC<StoreListProps> = ({ stores, onReportCrowdness }) => {
       </div>
 
       {stores.map((store) => (
-        <Card key={store.id} className="hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-gray-300">
+        <Card 
+          key={store.id} 
+          className="hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-gray-300 cursor-pointer"
+          onClick={() => onStoreClick(store)}
+        >
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div className="flex-1">
@@ -94,7 +98,10 @@ const StoreList: React.FC<StoreListProps> = ({ stores, onReportCrowdness }) => {
                   </div>
                   
                   <Button 
-                    onClick={() => onReportCrowdness(store)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onReportCrowdness(store);
+                    }}
                     variant="outline"
                     size="sm"
                     className="hover:bg-blue-50 hover:border-blue-300"

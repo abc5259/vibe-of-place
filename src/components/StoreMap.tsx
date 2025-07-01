@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,9 +9,10 @@ interface StoreMapProps {
   stores: Store[];
   userLocation: { lat: number; lng: number } | null;
   onStoreSelect: (store: Store) => void;
+  onStoreClick: (store: Store) => void;
 }
 
-const StoreMap: React.FC<StoreMapProps> = ({ stores, userLocation, onStoreSelect }) => {
+const StoreMap: React.FC<StoreMapProps> = ({ stores, userLocation, onStoreSelect, onStoreClick }) => {
   const getCrowdnessColor = (level: CrowdnessLevel) => {
     switch (level) {
       case 'low': return 'bg-green-500 border-green-600';
@@ -76,7 +76,7 @@ const StoreMap: React.FC<StoreMapProps> = ({ stores, userLocation, onStoreSelect
                 >
                   <div 
                     className={`w-4 h-4 rounded-full border-2 shadow-lg cursor-pointer hover:scale-110 transition-transform ${getCrowdnessColor(store.crowdnessLevel)}`}
-                    onClick={() => onStoreSelect(store)}
+                    onClick={() => onStoreClick(store)}
                   />
                 </div>
               );
@@ -88,7 +88,7 @@ const StoreMap: React.FC<StoreMapProps> = ({ stores, userLocation, onStoreSelect
       {/* Store Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {stores.map((store) => (
-          <Card key={store.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => onStoreSelect(store)}>
+          <Card key={store.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => onStoreClick(store)}>
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg">{store.name}</CardTitle>

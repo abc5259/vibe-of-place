@@ -1,9 +1,43 @@
 
-import { Store, CrowdnessLevel } from '@/types/store';
+import { Store, CrowdnessLevel, HourlyData } from '@/types/store';
 
 const getRandomCrowdnessLevel = (): CrowdnessLevel => {
   const levels: CrowdnessLevel[] = ['low', 'medium', 'high'];
   return levels[Math.floor(Math.random() * levels.length)];
+};
+
+const generateHourlyData = (): HourlyData[] => {
+  const hourlyData: HourlyData[] = [];
+  
+  for (let hour = 0; hour < 24; hour++) {
+    let crowdnessValue: number;
+    let crowdnessLevel: CrowdnessLevel;
+    
+    // 식사 시간대 (7-9, 12-14, 18-20)에 더 혼잡하게 설정
+    if ((hour >= 7 && hour <= 9) || (hour >= 12 && hour <= 14) || (hour >= 18 && hour <= 20)) {
+      crowdnessValue = Math.floor(Math.random() * 40) + 60; // 60-100
+    } else if (hour >= 22 || hour <= 6) {
+      crowdnessValue = Math.floor(Math.random() * 30) + 0; // 0-30
+    } else {
+      crowdnessValue = Math.floor(Math.random() * 50) + 25; // 25-75
+    }
+    
+    if (crowdnessValue < 33) {
+      crowdnessLevel = 'low';
+    } else if (crowdnessValue < 67) {
+      crowdnessLevel = 'medium';
+    } else {
+      crowdnessLevel = 'high';
+    }
+    
+    hourlyData.push({
+      hour,
+      crowdnessLevel,
+      crowdnessValue
+    });
+  }
+  
+  return hourlyData;
 };
 
 export const dummyStores: Store[] = [
@@ -18,7 +52,8 @@ export const dummyStores: Store[] = [
     coordinates: { lat: 37.4979, lng: 127.0276 },
     rating: 4.2,
     priceRange: '₩₩',
-    estimatedWaitTime: 5
+    estimatedWaitTime: 5,
+    hourlyData: generateHourlyData()
   },
   {
     id: '2',
@@ -31,7 +66,8 @@ export const dummyStores: Store[] = [
     coordinates: { lat: 37.4977, lng: 127.0278 },
     rating: 4.0,
     priceRange: '₩',
-    estimatedWaitTime: 3
+    estimatedWaitTime: 3,
+    hourlyData: generateHourlyData()
   },
   {
     id: '3',
@@ -44,7 +80,8 @@ export const dummyStores: Store[] = [
     coordinates: { lat: 37.4982, lng: 127.0274 },
     rating: 4.1,
     priceRange: '₩₩',
-    estimatedWaitTime: 8
+    estimatedWaitTime: 8,
+    hourlyData: generateHourlyData()
   },
   {
     id: '4',
@@ -57,7 +94,8 @@ export const dummyStores: Store[] = [
     coordinates: { lat: 37.4975, lng: 127.0280 },
     rating: 3.9,
     priceRange: '₩',
-    estimatedWaitTime: 2
+    estimatedWaitTime: 2,
+    hourlyData: generateHourlyData()
   },
   {
     id: '5',
@@ -70,7 +108,8 @@ export const dummyStores: Store[] = [
     coordinates: { lat: 37.4984, lng: 127.0272 },
     rating: 4.5,
     priceRange: '₩₩₩',
-    estimatedWaitTime: 15
+    estimatedWaitTime: 15,
+    hourlyData: generateHourlyData()
   },
   {
     id: '6',
@@ -83,7 +122,8 @@ export const dummyStores: Store[] = [
     coordinates: { lat: 37.4980, lng: 127.0275 },
     rating: 4.3,
     priceRange: '₩₩',
-    estimatedWaitTime: 7
+    estimatedWaitTime: 7,
+    hourlyData: generateHourlyData()
   },
   {
     id: '7',
@@ -96,7 +136,8 @@ export const dummyStores: Store[] = [
     coordinates: { lat: 37.4976, lng: 127.0282 },
     rating: 3.8,
     priceRange: '₩',
-    estimatedWaitTime: 5
+    estimatedWaitTime: 5,
+    hourlyData: generateHourlyData()
   },
   {
     id: '8',
@@ -109,6 +150,7 @@ export const dummyStores: Store[] = [
     coordinates: { lat: 37.4978, lng: 127.0277 },
     rating: 4.0,
     priceRange: '₩',
-    estimatedWaitTime: 1
+    estimatedWaitTime: 1,
+    hourlyData: generateHourlyData()
   }
 ];

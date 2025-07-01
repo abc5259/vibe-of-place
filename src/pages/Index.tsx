@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { MapPin, Navigation, Clock, Users } from 'lucide-react';
 import StoreList from '@/components/StoreList';
 import StoreMap from '@/components/StoreMap';
+import StoreDetailModal from '@/components/StoreDetailModal';
 import CrowdnessReportModal from '@/components/CrowdnessReportModal';
 import { Store, CrowdnessLevel } from '@/types/store';
 import { dummyStores } from '@/data/dummyStores';
@@ -16,6 +16,7 @@ const Index = () => {
   const [stores, setStores] = useState<Store[]>(dummyStores);
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
 
   useEffect(() => {
@@ -57,6 +58,11 @@ const Index = () => {
   const openReportModal = (store: Store) => {
     setSelectedStore(store);
     setIsReportModalOpen(true);
+  };
+
+  const openDetailModal = (store: Store) => {
+    setSelectedStore(store);
+    setIsDetailModalOpen(true);
   };
 
   return (
@@ -145,15 +151,28 @@ const Index = () => {
           <StoreList 
             stores={stores} 
             onReportCrowdness={openReportModal}
+            onStoreClick={openDetailModal}
           />
         ) : (
           <StoreMap 
             stores={stores} 
             userLocation={userLocation}
             onStoreSelect={openReportModal}
+            onStoreClick={openDetailModal}
           />
         )}
       </div>
+
+      {/* Store Detail Modal */}
+      <StoreDetailModal
+        store={selectedStore}
+        isOpen={isDetailModalOpen}
+        onClose={() => {
+          setIsDetailModalOpen(false);
+          setSelectedStore(null);
+        }}
+        onReportCrowdness={openReportModal}
+      />
 
       {/* Report Modal */}
       <CrowdnessReportModal
