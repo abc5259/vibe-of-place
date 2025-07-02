@@ -75,11 +75,25 @@ const StoreMap: React.FC<StoreMapProps> = ({ stores, userLocation, onStoreSelect
                   className="absolute"
                   style={positions[index]}
                 >
-                  <div 
-                    className={`w-4 h-4 rounded-full border-2 shadow-lg cursor-pointer hover:scale-110 transition-transform ${getCrowdnessColor(store.crowdnessLevel)}`}
-                    onClick={() => onStoreSelect(store)}
-                    title={`${store.name} - 클릭하여 제보하기`}
-                  />
+                  <div className="relative group">
+                    <div 
+                      className={`w-4 h-4 rounded-full border-2 shadow-lg cursor-pointer hover:scale-110 transition-transform ${getCrowdnessColor(store.crowdnessLevel)}`}
+                      onClick={() => onStoreSelect(store)}
+                      title={`${store.name} - 클릭하여 제보하기`}
+                    />
+                    {/* 장소 이름 라벨 */}
+                    <div className="absolute top-full mt-1 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                      <div className="bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md shadow-md border text-xs font-medium text-gray-800">
+                        {store.name}
+                      </div>
+                    </div>
+                    {/* 혼잡도 표시 */}
+                    <div className="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                      <div className={`px-2 py-0.5 rounded text-white text-xs font-medium ${getCrowdnessColor(store.crowdnessLevel)}`}>
+                        {getCrowdnessText(store.crowdnessLevel)}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               );
             })}
