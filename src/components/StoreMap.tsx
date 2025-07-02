@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -40,7 +41,7 @@ const StoreMap: React.FC<StoreMapProps> = ({ stores, userLocation, onStoreSelect
             <div className="text-center space-y-4">
               <MapPin className="w-16 h-16 text-gray-400 mx-auto" />
               <div>
-                <p className="text-gray-600 font-medium">지도 기능은 개발 중입니다</p>
+                <p className="text-gray-600 font-medium">지도에서 장소를 클릭하여 제보하세요</p>
                 <p className="text-sm text-gray-500">현재는 더미 데이터로 시뮬레이션 중</p>
               </div>
             </div>
@@ -76,7 +77,8 @@ const StoreMap: React.FC<StoreMapProps> = ({ stores, userLocation, onStoreSelect
                 >
                   <div 
                     className={`w-4 h-4 rounded-full border-2 shadow-lg cursor-pointer hover:scale-110 transition-transform ${getCrowdnessColor(store.crowdnessLevel)}`}
-                    onClick={() => onStoreClick(store)}
+                    onClick={() => onStoreSelect(store)}
+                    title={`${store.name} - 클릭하여 제보하기`}
                   />
                 </div>
               );
