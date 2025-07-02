@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +8,11 @@ import StoreList from '@/components/StoreList';
 import StoreMap from '@/components/StoreMap';
 import StoreDetailModal from '@/components/StoreDetailModal';
 import CrowdnessReportModal from '@/components/CrowdnessReportModal';
+import PointsHeader from '@/components/PointsHeader';
+import RewardStoreModal from '@/components/RewardStoreModal';
+import PointsEarnedToast from '@/components/PointsEarnedToast';
 import { Store, CrowdnessLevel } from '@/types/store';
+import { UserPoints, RewardItem } from '@/types/reward';
 import { dummyStores } from '@/data/dummyStores';
 import { toast } from 'sonner';
 
@@ -17,7 +22,16 @@ const Index = () => {
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isRewardStoreOpen, setIsRewardStoreOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  
+  // Points system state
+  const [userPoints, setUserPoints] = useState<UserPoints>({
+    userId: 'user-1',
+    totalPoints: 1250,
+    earnedToday: 150,
+    lastEarnedAt: new Date()
+  });
 
   useEffect(() => {
     // 더미 위치 데이터 (서울 강남역 근처)
@@ -42,7 +56,29 @@ const Index = () => {
     return levels[Math.floor(Math.random() * levels.length)];
   };
 
+  const calculatePointsForReport = (level: CrowdnessLevel): number => {
+    // 기본 포인트 + 혼잡도별 보너스
+    const basePoints = 50;
+    const bonusPoints = {
+      'low': 10,
+      'medium': 20,
+      'high': 30 // 혼잡한 곳 제보 시 더 많은 포인트
+    };
+    return basePoints + bonusPoints[level];
+  };
+
   const handleReportCrowdness = (storeId: string, level: CrowdnessLevel) => {
+    const earnedPoints = calculatePointsForReport(level);
+    
+    // 포인트 업데이트
+    setUserPoints(prev => ({
+      ...prev,
+      totalPoints: prev.totalPoints + earnedPoints,
+      earnedToday: prev.earnedToday + earnedPoints,
+      lastEarnedAt: new Date()
+    }));
+
+    // 스토어 업데이트
     setStores(prevStores =>
       prevStores.map(store =>
         store.id === storeId
@@ -50,9 +86,33 @@ const Index = () => {
           : store
       )
     );
+
     setIsReportModalOpen(false);
     setSelectedStore(null);
-    toast.success('혼잡도 제보가 완료되었습니다! 감사합니다 😊');
+
+    // 포인트 획득 토스트
+    toast.custom(() => (
+      <PointsEarnedToast 
+        points={earnedPoints} 
+        reason="혼잡도 제보 완료!" 
+      />
+    ), {
+      duration: 3000,
+    });
+  };
+
+  const handleRewardPurchase = (item: RewardItem) => {
+    if (userPoints.totalPoints >= item.pointsCost) {
+      setUserPoints(prev => ({
+        ...prev,
+        totalPoints: prev.totalPoints - item.pointsCost
+      }));
+      
+      toast.success(`${item.name} 교환이 완료되었습니다! 🎉`);
+      setIsRewardStoreOpen(false);
+    } else {
+      toast.error('포인트가 부족합니다.');
+    }
   };
 
   const openReportModal = (store: Store) => {
@@ -100,8 +160,16 @@ const Index = () => {
         </div>
       </header>
 
+      {/* Points Header */}
+      <div className="max-w-6xl mx-auto px-4 py-4">
+        <PointsHeader 
+          userPoints={userPoints}
+          onOpenRewardStore={() => setIsRewardStoreOpen(true)}
+        />
+      </div>
+
       {/* Current Location */}
-      <div className="max-w-6xl mx-auto px-4 py-6">
+      <div className="max-w-6xl mx-auto px-4 py-2">
         <Card className="bg-gradient-to-r from-blue-500 to-green-500 text-white border-0 shadow-lg">
           <CardContent className="p-4">
             <div className="flex items-center space-x-3">
@@ -183,6 +251,14 @@ const Index = () => {
         }}
         store={selectedStore}
         onReport={handleReportCrowdness}
+      />
+
+      {/* Reward Store Modal */}
+      <RewardStoreModal
+        isOpen={isRewardStoreOpen}
+        onClose={() => setIsRewardStoreOpen(false)}
+        userPoints={userPoints}
+        onPurchase={handleRewardPurchase}
       />
     </div>
   );
